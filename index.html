@@ -11,14 +11,13 @@
         <h1>Pesquisar Vídeos</h1>
         <form id="searchForm">
             <input type="text" id="query" placeholder="Pesquise por vídeos..." required>
-            <select id="platform" required>
-                <option value="youtube">YouTube</option>
-                <option value="vimeo">Vimeo</option>
-                <option value="dailymotion">Dailymotion</option>
-            </select>
             <button type="submit">Pesquisar</button>
         </form>
-        <div id="results"></div>
+
+        <div id="results">
+            <h2>Resultados:</h2>
+            <div id="videoResults"></div>
+        </div>
     </div>
 
     <script src="script.js"></script>
