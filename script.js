@@ -1,19 +1,4 @@
 document.getElementById("searchForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    
-    const query = document.getElementById("query").value;
-    const videoResults = document.getElementById("videoResults");
-
-    // Limpa os resultados anteriores (mas não a barra de pesquisa)
-    videoResults.innerHTML = "";
-
-    // Exibe o carregamento, se necessário
-    const loadingMessage = document.createElement("p");
-    loadingMessage.innerText = "Carregando resultados...";
-    videoResults.appendChild(loadingMessage);
-
-    // Busca os vídeos nas plataformas
-    fetchYoutudocument.getElementById("searchForm").addEventListener("submit", function(event) {
     event.preventDefault();  // Impede o envio do formulário
 
     const query = document.getElementById("query").value; // Pega o valor da pesquisa
@@ -63,7 +48,11 @@ function fetchYoutube(query) {
                 videoResults.appendChild(videoItem);
             });
         })
-        .catch(error => console.error("Erro ao buscar no YouTube:", error));
+        .catch(error => {
+            console.error("Erro ao buscar no YouTube:", error);
+            const videoResults = document.getElementById("videoResults");
+            videoResults.innerHTML = "<p>Erro ao buscar vídeos no YouTube. Tente novamente mais tarde.</p>";
+        });
 }
 
 function fetchVimeo(query) {
@@ -99,7 +88,11 @@ function fetchVimeo(query) {
             videoResults.appendChild(videoItem);
         });
     })
-    .catch(error => console.error("Erro ao buscar no Vimeo:", error));
+    .catch(error => {
+        console.error("Erro ao buscar no Vimeo:", error);
+        const videoResults = document.getElementById("videoResults");
+        videoResults.innerHTML = "<p>Erro ao buscar vídeos no Vimeo. Tente novamente mais tarde.</p>";
+    });
 }
 
 function fetchDailymotion(query) {
@@ -130,5 +123,9 @@ function fetchDailymotion(query) {
                 videoResults.appendChild(videoItem);
             });
         })
-        .catch(error => console.error("Erro ao buscar no Dailymotion:", error));
+        .catch(error => {
+            console.error("Erro ao buscar no Dailymotion:", error);
+            const videoResults = document.getElementById("videoResults");
+            videoResults.innerHTML = "<p>Erro ao buscar vídeos no Dailymotion. Tente novamente mais tarde.</p>";
+        });
 }
