@@ -4,14 +4,17 @@ document.getElementById("searchForm").addEventListener("submit", function(event)
     const query = document.getElementById("query").value;
     const videoResults = document.getElementById("videoResults");
 
-    // Limpa os resultados anteriores
+    // Limpa os resultados anteriores (mas não a barra de pesquisa)
     videoResults.innerHTML = "";
 
-    // Busca no YouTube
+    // Exibe o carregamento, se necessário
+    const loadingMessage = document.createElement("p");
+    loadingMessage.innerText = "Carregando resultados...";
+    videoResults.appendChild(loadingMessage);
+
+    // Busca os vídeos nas plataformas
     fetchYoutube(query);
-    // Busca no Vimeo
     fetchVimeo(query);
-    // Busca no Dailymotion
     fetchDailymotion(query);
 });
 
@@ -22,15 +25,29 @@ function fetchYoutube(query) {
     fetch(youtubeUrl)
         .then(response => response.json())
         .then(data => {
+            const videoResults = document.getElementById("videoResults");
+            // Remover a mensagem de carregamento
+            videoResults.innerHTML = "";
+
             data.items.forEach(item => {
                 const videoItem = document.createElement("div");
                 videoItem.classList.add("video-item");
-                videoItem.innerHTML = `
-                    <a href="https://www.youtube.com/watch?v=${item.id.videoId}" target="_blank">
-                        <img src="${item.snippet.thumbnails.medium.url}" alt="${item.snippet.title}">
-                        <h3>${item.snippet.title}</h3>
-                    </a>
+
+                // Criação do link para o vídeo, mas só será acessado após clique
+                const videoLink = document.createElement("a");
+                videoLink.href = `https://www.youtube.com/watch?v=${item.id.videoId}`;
+                videoLink.target = "_blank"; // Isso abre o vídeo em uma nova aba
+
+                // Exibe a miniatura
+                const thumbnail = item.snippet.thumbnails.medium.url;
+                const title = item.snippet.title;
+
+                videoLink.innerHTML = `
+                    <img src="${thumbnail}" alt="${title}">
+                    <h3>${title}</h3>
                 `;
+
+                videoItem.appendChild(videoLink);
                 document.getElementById("videoResults").appendChild(videoItem);
             });
         })
@@ -48,15 +65,26 @@ function fetchVimeo(query) {
     })
     .then(response => response.json())
     .then(data => {
+        const videoResults = document.getElementById("videoResults");
         data.data.forEach(item => {
             const videoItem = document.createElement("div");
             videoItem.classList.add("video-item");
-            videoItem.innerHTML = `
-                <a href="https://vimeo.com/${item.uri.split('/')[2]}" target="_blank">
-                    <img src="${item.pictures.sizes[2].link}" alt="${item.name}">
-                    <h3>${item.name}</h3>
-                </a>
+
+            // Criação do link para o vídeo, mas só será acessado após clique
+            const videoLink = document.createElement("a");
+            videoLink.href = `https://vimeo.com/${item.uri.split('/')[2]}`;
+            videoLink.target = "_blank"; // Isso abre o vídeo em uma nova aba
+
+            // Exibe a miniatura
+            const thumbnail = item.pictures.sizes[2].link;
+            const title = item.name;
+
+            videoLink.innerHTML = `
+                <img src="${thumbnail}" alt="${title}">
+                <h3>${title}</h3>
             `;
+
+            videoItem.appendChild(videoLink);
             document.getElementById("videoResults").appendChild(videoItem);
         });
     })
@@ -64,22 +92,6 @@ function fetchVimeo(query) {
 }
 
 function fetchDailymotion(query) {
-    const dailymotionUrl = `https://api.dailymotion.com/videos?search=${encodeURIComponent(query)}&limit=5`;
+    const dailymotionUrl = `https://api.dailymotion.com/videos?search=
 
-    fetch(dailymotionUrl)
-        .then(response => response.json())
-        .then(data => {
-            data.list.forEach(item => {
-                const videoItem = document.createElement("div");
-                videoItem.classList.add("video-item");
-                videoItem.innerHTML = `
-                    <a href="https://www.dailymotion.com/video/${item.id}" target="_blank">
-                        <img src="${item.thumbnail_url}" alt="${item.title}">
-                        <h3>${item.title}</h3>
-                    </a>
-                `;
-                document.getElementById("videoResults").appendChild(videoItem);
-            });
-        })
-        .catch(error => console.error("Erro ao buscar no Dailymotion:", error));
 }
