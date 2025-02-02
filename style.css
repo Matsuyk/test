@@ -8,27 +8,24 @@ body {
     align-items: center;
     height: 100vh;
 }
+
 .container {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 80%;
-    max-width: 600px;
+    max-width: 900px;
 }
+
 input[type="text"] {
-    width: 60%;
+    width: 70%;
     padding: 10px;
     margin-right: 10px;
     border-radius: 5px;
     border: 1px solid #ddd;
 }
-select {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin-right: 10px;
-}
+
 button {
     padding: 10px 20px;
     border: none;
@@ -37,9 +34,37 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
+
 button:hover {
     background-color: #45a049;
 }
+
+#videoResults {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.video-item {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    background-color: #fafafa;
+}
+
+.video-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.video-item h3 {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
 #results {
     margin-top: 20px;
 }
